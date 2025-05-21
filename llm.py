@@ -4,8 +4,10 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnableBranch, RunnableLambda
 from langchain.schema.output_parser import StrOutputParser
+from langchain_deepseek import ChatDeepSeek
 import openai
 import logging
+
 
 # Referenced this video in creating this section: https://www.youtube.com/watch?v=yF9kGESAi3M
 
@@ -128,8 +130,13 @@ def flightManualAssistance(message):
     return response.content
 
 def LLMTesting(message):
-    model = get_model()
-    response = model.invoke(message)
+    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+    gemini_response = model.invoke(message)
 
     model = ChatOpenAI(model="gpt-4o")
-    response = model.invoke(message)
+    chatgpt_response = model.invoke(message)
+
+    model = ChatDeepSeek(model="deepseek-chat")
+    deepseek_response = model.invoke(message)
+
+    return {"gemini": gemini_response.content, "chatgpt": chatgpt_response, "deepseek": deepseek_response}

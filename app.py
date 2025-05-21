@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import requests
 import tempfile
 import logging
-from llm import LLMRequestHandler, speechToText
+from llm import LLMRequestHandler, speechToText, LLMTesting
 import base64
 
 app = Flask(__name__)
@@ -154,8 +154,11 @@ def model():
     response.status_code = 200
     return response
         
+@app.route("/test", methods=["POST"])
+def test():
+    data = request.get_json()
+    prompt = data.get("prompt")
 
-
-
+    response = jsonify(LLMTesting(prompt))
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
