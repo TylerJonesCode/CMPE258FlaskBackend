@@ -139,10 +139,20 @@ def model():
     
     
     logging.info("model chain is starting")
+    result = None
     try:
         logging.info(":)")
+        result = LLMRequestHandler(text)
     except Exception as e:
-        pass
+        logging.info("Error with LLM chain")
+        logging.info(str(e))
+        response = jsonify({"error": str(e)})
+        response.status_code = 500
+        return response
+    
+    response = jsonify({"human": text, "AI": result})
+    response.status_code = 200
+    return response
         
 
 
