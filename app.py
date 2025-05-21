@@ -45,10 +45,10 @@ def speech():
     try:
         logging.info("beginning audio processing")
         
-        logging.info(f"audio url: {audioUrl}")
-        logging.info(f"Length of audio_base64: {len(audio_base64)}")
+        #logging.info(f"audio url: {audioUrl}")
+        #logging.info(f"Length of audio_base64: {len(audioUrl)}")
         
-        audio_bytes = base64.b64decode(audio_base64)
+        audio_bytes = base64.b64decode(audioUrl)
 
         text = None
          
