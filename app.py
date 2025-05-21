@@ -81,7 +81,70 @@ def speech():
 
 @app.route("/model", methods=["POST"])
 def model():
-    return jsonify({"text": "hi"})
+    logging.info("Speech Detection Accessed")
+    data = request.get_json()
+
+    if data is None:
+        logging.info("????")
+
+    audioUrl = data.get("audioUrl")
+    audioConfig = data.get("config")
+
+    if not audioUrl:
+        logging.info("no audioUrl")
+    
+    if not audioConfig:
+        logging.info("no audio Config")
+
+    if not audioUrl or not audioConfig:
+        response = jsonify({"error": "no audioUrl or config"})
+        response.status_code = 400
+        return response
+
+    logging.info("uri and config found")
+    
+    text = None
+    try:
+        logging.info("beginning audio processing")
+        
+        #logging.info(f"audio url: {audioUrl}")
+        #logging.info(f"Length of audio_base64: {len(audioUrl)}")
+        
+        audio_bytes = base64.b64decode(audioUrl)
+         
+        logging.info("audio is inputted into the model")
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
+            logging.info("temp file made")
+            tmp.write(audio_bytes)
+            tmp.flush()
+            tmp.seek(0)
+            logging.info("audio written to temp file")
+            text = speechToText(tmp.name)
+
+        logging.info("model processing is completed")
+
+        if text is None:
+            response = jsonify({"error": "whisper speech translation failed"})
+            response.status_code = 400
+            return response
+        
+        logging.info(f"Model transcription complete: {text}")
+        
+
+    except Exception as e:
+        logging.info("Error with speech detection")
+        response = jsonify({"error": str(e)})
+        response.status_code = 500
+        return response
+    
+    
+    logging.info("model chain is starting")
+    try:
+        logging.info(":)")
+    except Exception as e:
+        pass
+        
+
 
 
 if __name__ == "__main__":

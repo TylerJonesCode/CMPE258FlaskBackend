@@ -35,10 +35,10 @@ radio_command_translation_template = ChatPromptTemplate.from_messages(
     ]
 )
 
-
-radio_command_translation_better = RunnableLambda(
-
-)
+#
+#radio_command_translation_better = RunnableLambda(
+#
+#)
 
 flight_manual_assistance_template = ChatPromptTemplate.from_messages(
     [
@@ -85,7 +85,7 @@ def get_chain():
 def LLMRequestHandler(prompt):
     logging.info(f"Request handling started. Prompt: {prompt}")
     llm_chain = get_chain()
-    response = request_chain.invoke({"prompt": prompt})
+    response = llm_chain.invoke({"prompt": prompt})
     logging.info(f"Request handled. Result: {response}")
     return response
 def speechToText(file):
