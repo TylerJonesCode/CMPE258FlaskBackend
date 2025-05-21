@@ -66,13 +66,17 @@ def get_chain():
     global chain
     if chain is None:
         curr_model = get_model()
+        RunnableLambda(lambda prompt: {
+            "prompt": prompt,
+            "classification": prompt | classifier_prompt_template | curr_model | StrOutputParser()
+        })
         task_branches = RunnableBranch(
             (
-                lambda x: "1" in x,
+                lambda x: "1" in x["classification"],
                 radio_command_translation_template | curr_model | StrOutputParser()
             ),
             (
-                lambda x: "2" in x,
+                lambda x: "2" in x["classification"],
                 flight_manual_assistance_template | curr_model | StrOutputParser()
             ),
             general_assistance_template | curr_model | StrOutputParser()
