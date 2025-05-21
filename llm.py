@@ -5,6 +5,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnableParallel, RunnableLambda
 from langchain.schema.output_parser import StrOutputParser
 import openai
+import logging
 
 # Referenced this video in creating this section: https://www.youtube.com/watch?v=yF9kGESAi3M
 
@@ -73,10 +74,13 @@ def LLMRequestHandler(prompt):
     #response = request_chain.invoke({"prompt": prompt})
     pass
 def speechToText(file):
+    logging.info("API request is being sent")
     text = openai.Audio.transcribe(
                 model="whisper-1",
                 file=file
             )
+    
+    logging.info("API result was received")
     return text
 
 def radioCommandTranslation(message):
