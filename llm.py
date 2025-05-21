@@ -29,38 +29,31 @@ classifier_prompt_template = ChatPromptTemplate.from_messages(
 
 radio_command_translation_template = ChatPromptTemplate.from_messages(
     [
-        ("system", """You are an assistant that will classify the types of prompts by pilots that are sent to you. 
-                      You must assign each prompt a number from 0-2. 
-                      Assign a 1 if the request is for radio command translation.
-                      Assign a 2 if the request is for flight manual assistance.
-                      Assign a 0 if the request is for anything else.  """),
+        ("system", "You are an assistant that will decode the radio command sent by the user and explain in detail what it means."),
         ("human", "{prompt}")
     ]
 )
 
+
+radio_command_translation_better = RunnableLambda(
+    
+)
+
 flight_manual_assistance_template = ChatPromptTemplate.from_messages(
     [
-        ("system", """You are an assistant that will classify the types of prompts by pilots that are sent to you. 
-                      You must assign each prompt a number from 0-2. 
-                      Assign a 1 if the request is for radio command translation.
-                      Assign a 2 if the request is for flight manual assistance.
-                      Assign a 0 if the request is for anything else.  """),
+        ("system", "You are an assistant that will assist pilots with their questions related to flight manuals. Answer their questions in detail."),
         ("human", "{prompt}")
     ]
 )
 
 general_assistance_template = ChatPromptTemplate.from_messages(
     [
-        ("system", """You are an assistant that will classify the types of prompts by pilots that are sent to you. 
-                      You must assign each prompt a number from 0-2. 
-                      Assign a 1 if the request is for radio command translation.
-                      Assign a 2 if the request is for flight manual assistance.
-                      Assign a 0 if the request is for anything else.  """),
+        ("system", "You are an assistant that will classify the types of prompts by pilots that are sent to you."),
         ("human", "{prompt}")
     ]
 )
 
-branches = RunnableBranch(
+task_branches = RunnableBranch(
     (
         lambda x: "1" in x,
         radio_command_translation_template | model | StrOutputParser
@@ -72,7 +65,9 @@ branches = RunnableBranch(
     general_assistance_template | model | StrOutputParser
 )
 
+classifier_chain = classifier_prompt_template | model | StrOutputParser
 
+request_chain = classifier_chain | task_branches
 
 def LLMRequestHandler(message):
     pass

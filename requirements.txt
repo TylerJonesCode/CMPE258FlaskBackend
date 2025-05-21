@@ -1,7 +1,5 @@
 flask==2.3.2
-torch==2.0.0
 openai
-torchaudio==2.0.1
 flask-cors
 dotenv
 langchain-openai
