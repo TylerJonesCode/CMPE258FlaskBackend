@@ -68,7 +68,7 @@ def get_chain():
         curr_model = get_model()
         classification = RunnableLambda(lambda prompt: {
             "prompt": prompt,
-            "classification": (prompt | classifier_prompt_template | curr_model | StrOutputParser()).invoke(prompt)
+            "classification": (classifier_prompt_template | curr_model | StrOutputParser()).invoke(prompt)
         })
         task_branches = RunnableBranch(
             (
