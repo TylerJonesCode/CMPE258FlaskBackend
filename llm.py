@@ -56,12 +56,14 @@ general_assistance_template = ChatPromptTemplate.from_messages(
 
 model = None
 def get_model():
+    global model
     if model is None:
         model = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
     return model
 
 chain = None
 def get_chain():
+    global chain
     if chain is None:
         curr_model = get_model()
         task_branches = RunnableBranch(
