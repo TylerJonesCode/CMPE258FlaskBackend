@@ -19,9 +19,9 @@ classifier_prompt_template = ChatPromptTemplate.from_messages(
         ("system", """You are an assistant that will classify the types of prompts by pilots that are sent to you. 
                         """),
         ("human", """You must assign the following prompt exactly one number from 0-2. 
-                      Assign a 1 if the request is for radio command translation.
-                      Assign a 2 if the request is for flight manual assistance.
-                      Assign a 0 if the request is for anything else: 
+                      Assign a 1 if the request is for radio command translation or is of the form of a radio command for a pilot.
+                      Assign a 2 if the request is related to flight manual assistance.
+                      Assign a 0 if the request is not related to either of these: 
                       {prompt}""")
         
     ]
@@ -30,7 +30,7 @@ classifier_prompt_template = ChatPromptTemplate.from_messages(
 
 radio_command_translation_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are an assistant that will decode the radio command sent by the user and explain in detail what it means."),
+        ("system", "You are an assistant that will decode the radio command sent by the user and explain what it means, but also be brief"),
         ("human", "Please output a 1 somewhere in the response: {prompt}")
     ]
 )
