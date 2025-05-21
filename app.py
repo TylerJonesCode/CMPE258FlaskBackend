@@ -9,18 +9,32 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+    print("Home Route Accessed")
     return "Hello, Render!"
 
 @app.route("/speech", methods=["POST"])
 def speech():
+    print("Speech Detection Accessed")
     data = request.get_json()
+
+    if data is None:
+        print("????")
+
     audioUrl = data.get("audioUrl")
-    audioConfig = data.get("audioConfig")
+    audioConfig = data.get("config")
+
+    if not audioUrl:
+        print("no audioUrl")
+    
+    if not audioConfig:
+        print("no audio Config")
 
     if not audioUrl or not audioConfig:
         response = jsonify({"error": "no audioUrl or config"})
         response.status_code = 400
         return response
+
+    print("uri and config found")
 
     try:
         audio = requests.get(audioUrl)

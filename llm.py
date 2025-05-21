@@ -70,8 +70,8 @@ import openai
 # request_chain = classifier_chain | task_branches
 
 def LLMRequestHandler(prompt):
-    response = request_chain.invoke({"prompt": prompt})
-
+    #response = request_chain.invoke({"prompt": prompt})
+    pass
 def speechToText(file):
     text = openai.Audio.transcribe(
                 model="whisper-1",
