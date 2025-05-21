@@ -89,7 +89,7 @@ def speechToText(file):
             file=audio_file
         )
         logging.info("API result was received")
-        return text
+        return text.text
     except Exception as e:
         logging.info(e)
         return ""
