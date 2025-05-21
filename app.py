@@ -39,6 +39,7 @@ def speech():
         return response
 
     logging.info("uri and config found")
+    
 
     try:
         logging.info("beginning audio processing")
@@ -47,8 +48,10 @@ def speech():
         
         logging.info("audio is inputted into the model")
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
+            logging.info("temp file made")
             tmp.write(response.content)
             tmp.flush()
+            logging.info("audio written to temp file")
             text = speechToText(tmp, audioConfig)
 
         logging.info("model processing is completed")
