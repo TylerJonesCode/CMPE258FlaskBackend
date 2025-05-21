@@ -69,26 +69,35 @@ import logging
 # classifier_chain = classifier_prompt_template | model | StrOutputParser
 
 # request_chain = classifier_chain | task_branches
+model = None
+def get_model():
+    if model is None:
+        model = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+    return model
 
 def LLMRequestHandler(prompt):
     #response = request_chain.invoke({"prompt": prompt})
     pass
 def speechToText(file):
     logging.info("API request is being sent")
-    text = openai.Audio.transcribe(
-                model="whisper-1",
-                file=file
-            )
-    
+    try:
+        text = openai.Audio.transcribe(
+                    model="whisper-1",
+                    file=file
+                )
+        return text
+    except Exception as e:
+        logging.info(e)
+        return ""
     logging.info("API result was received")
-    return text
+    
 
 def radioCommandTranslation(message):
     system_message = [
         SystemMessage(content="Instructions")
     ]
 
-    response = GPT_model.invoke(system_message)
+    response = model.invoke(system_message)
     return response.content
 
 def flightManualAssistance(message):
@@ -96,5 +105,12 @@ def flightManualAssistance(message):
         SystemMessage(content="Instructions")
     ]
 
-    response = GPT_model.invoke(system_message)
+    response = model.invoke(system_message)
     return response.content
+
+def LLMTesting(message):
+    model = get_model()
+    response = model.invoke(message)
+
+    model = ChatOpenAI(model="gpt-4o")
+    response = model.invoke(message)
