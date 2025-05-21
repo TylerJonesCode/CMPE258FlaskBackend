@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import requests
 import tempfile
+import logging
 from llm import LLMRequestHandler, speechToText
 
 
@@ -9,48 +10,52 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    print("Home Route Accessed")
+    logging.info("Home Route Accessed")
     return "Hello, Render!"
 
 @app.route("/speech", methods=["POST"])
 def speech():
-    print("Speech Detection Accessed")
+    logging.info("Speech Detection Accessed")
     data = request.get_json()
 
     if data is None:
-        print("????")
+        logging.info("????")
 
     audioUrl = data.get("audioUrl")
     audioConfig = data.get("config")
 
     if not audioUrl:
-        print("no audioUrl")
+        logging.info("no audioUrl")
     
     if not audioConfig:
-        print("no audio Config")
+        logging.info("no audio Config")
 
     if not audioUrl or not audioConfig:
         response = jsonify({"error": "no audioUrl or config"})
         response.status_code = 400
         return response
 
-    print("uri and config found")
+    logging.info("uri and config found")
 
     try:
+        logging.info("beginning audio processing")
         audio = requests.get(audioUrl)
         text = None
         
+        logging.info("audio is inputted into the model")
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
             tmp.write(response.content)
             tmp.flush()
             text = speechToText(tmp, audioConfig)
+
+        logging.info("model processing is completed")
 
         if text is None:
             response = jsonify({"error": "whisper speech translation failed"})
             response.status_code = 400
             return response
         
-        print(f"Model transcription complete: {text}")
+        logging.info(f"Model transcription complete: {text}")
         
         response = jsonify({"content": text})
         response.status_code = 200
