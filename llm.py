@@ -49,7 +49,7 @@ flight_manual_assistance_template = ChatPromptTemplate.from_messages(
 
 general_assistance_template = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are an assistant that will classify the types of prompts by pilots that are sent to you."),
+        ("system", "You are an assistant that will answer the types of prompts by pilots that are sent to you."),
         ("human", "{prompt}")
     ]
 )
