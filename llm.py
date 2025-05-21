@@ -54,21 +54,6 @@ general_assistance_template = ChatPromptTemplate.from_messages(
     ]
 )
 
-task_branches = RunnableBranch(
-    (
-        lambda x: "1" in x,
-        radio_command_translation_template | model | StrOutputParser
-    ),
-    (
-        lambda x: "2" in x,
-        flight_manual_assistance_template | model | StrOutputParser
-    ),
-    general_assistance_template | model | StrOutputParser
-)
-
-classifier_chain = classifier_prompt_template | model | StrOutputParser
-
-request_chain = classifier_chain | task_branches
 model = None
 def get_model():
     if model is None:
@@ -78,20 +63,20 @@ def get_model():
 chain = None
 def get_chain():
     if chain is None:
-        
+        curr_model = get_model()
         task_branches = RunnableBranch(
             (
                 lambda x: "1" in x,
-                radio_command_translation_template | model | StrOutputParser
+                radio_command_translation_template | curr_model | StrOutputParser
             ),
             (
                 lambda x: "2" in x,
-                flight_manual_assistance_template | model | StrOutputParser
+                flight_manual_assistance_template | curr_model | StrOutputParser
             ),
-            general_assistance_template | model | StrOutputParser
+            general_assistance_template | curr_model | StrOutputParser
         )
 
-        classifier_chain = classifier_prompt_template | model | StrOutputParser
+        classifier_chain = classifier_prompt_template | curr_model | StrOutputParser
 
         chain = classifier_chain | task_branches
 
