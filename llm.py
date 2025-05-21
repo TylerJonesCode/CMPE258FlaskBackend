@@ -81,10 +81,13 @@ def LLMRequestHandler(prompt):
 def speechToText(file):
     logging.info("API request is being sent")
     try:
-        text = openai.Audio.transcribe(
-                    model="whisper-1",
-                    file=file
-                )
+        text = None
+        client = openai.OpenAI()
+        with open(file, "rb") as audio_file:
+            text = client.audio.transcriptions.create(
+            model="whisper-1",
+            file=audio_file
+        )
         return text
     except Exception as e:
         logging.info(e)
