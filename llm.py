@@ -66,7 +66,7 @@ def get_chain():
     global chain
     if chain is None:
         curr_model = get_model()
-        RunnableLambda(lambda prompt: {
+        classification = RunnableLambda(lambda prompt: {
             "prompt": prompt,
             "classification": (prompt | classifier_prompt_template | curr_model | StrOutputParser()).invoke(prompt)
         })
@@ -82,9 +82,8 @@ def get_chain():
             RunnableLambda(lambda x: (general_assistance_template | curr_model | StrOutputParser()).invoke(x["prompt"]))
         )
 
-        classifier_chain = classifier_prompt_template | curr_model | StrOutputParser()
 
-        chain = classifier_chain | task_branches
+        chain = classification | task_branches
 
     return chain
 
