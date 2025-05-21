@@ -59,7 +59,7 @@ def speech():
             tmp.flush()
             tmp.seek(0)
             logging.info("audio written to temp file")
-            text = speechToText(tmp)
+            text = speechToText(tmp.name)
 
         logging.info("model processing is completed")
 

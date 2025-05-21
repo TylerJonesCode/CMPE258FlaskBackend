@@ -88,11 +88,12 @@ def speechToText(file):
             model="whisper-1",
             file=audio_file
         )
+        logging.info("API result was received")
         return text
     except Exception as e:
         logging.info(e)
         return ""
-    logging.info("API result was received")
+    
     
 
 def radioCommandTranslation(message):
