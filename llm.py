@@ -69,16 +69,16 @@ def get_chain():
         task_branches = RunnableBranch(
             (
                 lambda x: "1" in x,
-                radio_command_translation_template | curr_model | StrOutputParser
+                radio_command_translation_template | curr_model | StrOutputParser()
             ),
             (
                 lambda x: "2" in x,
-                flight_manual_assistance_template | curr_model | StrOutputParser
+                flight_manual_assistance_template | curr_model | StrOutputParser()
             ),
-            general_assistance_template | curr_model | StrOutputParser
+            general_assistance_template | curr_model | StrOutputParser()
         )
 
-        classifier_chain = classifier_prompt_template | curr_model | StrOutputParser
+        classifier_chain = classifier_prompt_template | curr_model | StrOutputParser()
 
         chain = classifier_chain | task_branches
 
