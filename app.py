@@ -3,6 +3,7 @@ import requests
 import tempfile
 import logging
 from llm import LLMRequestHandler, speechToText
+import base64
 
 app = Flask(__name__)
 
@@ -43,14 +44,17 @@ def speech():
 
     try:
         logging.info("beginning audio processing")
-        audio = requests.get(audioUrl)
-        text = None
         
+        audio_bytes = base64.b64decode(audio_base64)
+
+        text = None
+         
         logging.info("audio is inputted into the model")
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=True) as tmp:
             logging.info("temp file made")
-            tmp.write(response.content)
+            tmp.write(audio_bytes)
             tmp.flush()
+            tmp.seek(0)
             logging.info("audio written to temp file")
             text = speechToText(tmp, audioConfig)
 
