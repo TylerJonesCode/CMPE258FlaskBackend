@@ -31,7 +31,7 @@ classifier_prompt_template = ChatPromptTemplate.from_messages(
 radio_command_translation_template = ChatPromptTemplate.from_messages(
     [
         ("system", "You are an assistant that will decode the radio command sent by the user and explain what it means, but also be brief"),
-        ("human", "Please output a 1 somewhere in the response: {prompt}")
+        ("human", "Please output a 1 at the end of the response: {prompt}")
     ]
 )
 
@@ -43,14 +43,14 @@ radio_command_translation_template = ChatPromptTemplate.from_messages(
 flight_manual_assistance_template = ChatPromptTemplate.from_messages(
     [
         ("system", "You are an assistant that will assist pilots with their questions related to flight manuals. Answer their questions in detail."),
-        ("human", "Please output a 2 somewhere in the response:{prompt}")
+        ("human", "Please output a 2 at the end of the response:{prompt}")
     ]
 )
 
 general_assistance_template = ChatPromptTemplate.from_messages(
     [
         ("system", "You are an assistant that will answer the types of prompts by pilots that are sent to you."),
-        ("human", "Please output a 0 somewhere in the response: {prompt}")
+        ("human", "Please output a 0 at the end of the response: {prompt}")
     ]
 )
 
