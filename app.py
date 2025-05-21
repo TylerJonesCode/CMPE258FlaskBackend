@@ -4,9 +4,12 @@ import tempfile
 import logging
 from llm import LLMRequestHandler, speechToText
 
-
-
 app = Flask(__name__)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s: %(message)s',
+)
 
 @app.route('/')
 def home():
