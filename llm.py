@@ -130,7 +130,7 @@ def flightManualAssistance(message):
     return response.content
 
 def LLMTesting(message):
-    model = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
+    model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
     gemini_response = model.invoke(message)
 
     model = ChatOpenAI(model="gpt-4o")
