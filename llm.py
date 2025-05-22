@@ -139,4 +139,4 @@ def LLMTesting(message):
     model = ChatDeepSeek(model="deepseek-chat")
     deepseek_response = model.invoke(message)
 
-    return {"gemini": gemini_response.content, "chatgpt": chatgpt_response, "deepseek": deepseek_response}
+    return {"gemini": gemini_response.content, "chatgpt": chatgpt_response.content, "deepseek": deepseek_response.content}
